@@ -5,92 +5,115 @@ import Image from 'next/image'
 
 export default function Home() {
   return (
-    <main className="min-h-screen flex flex-col" style={{ backgroundColor: 'var(--noir)' }}>
+    <main className="min-h-screen flex flex-col" style={{ backgroundColor: '#FAF8F5' }}>
 
       {/* HEADER */}
-      <header className="flex items-center justify-between px-6 py-4" style={{ backgroundColor: 'var(--noir-card)' }}>
-        <Image src="/images/logo.png" alt="SO PIZZ" width={120} height={60} />
+      <header style={{ backgroundColor: 'white', borderBottom: '1px solid #F0EBE5' }}
+        className="flex items-center justify-between px-6 py-4">
+        <Image src="/images/logo.png" alt="SO PIZZ" width={100} height={50} />
         <Link href="/cart">
-          <div className="relative">
-            <span className="text-2xl">🛒</span>
+          <div style={{ backgroundColor: '#FFF0EB', borderRadius: '12px', padding: '8px 12px' }}>
+            <span style={{ color: '#E8430A', fontSize: '13px', fontWeight: '600' }}>🛒 Panier</span>
           </div>
         </Link>
       </header>
 
-      {/* HERO */}
-      <section className="flex flex-col items-center justify-center text-center px-6 py-16 gap-6"
-        style={{ background: 'linear-gradient(180deg, var(--noir-card) 0%, var(--noir) 100%)' }}>
-        <div className="flex flex-col gap-2">
-          <p className="text-sm uppercase tracking-widest" style={{ color: 'var(--orange)' }}>
-            The French Touch
-          </p>
-          <h1 className="text-5xl font-black uppercase" style={{ color: 'var(--blanc)' }}>
-            SO PIZZ
-          </h1>
-          <p className="text-lg" style={{ color: 'var(--blanc-muted)' }}>
-            Pizzas artisanales cuites au feu de bois
-          </p>
-        </div>
-
+      {/* HERO IMAGE */}
+      <section style={{ backgroundColor: '#E8430A', padding: '32px 24px', textAlign: 'center' }}>
+        <p style={{ color: '#FFD0B0', fontSize: '12px', letterSpacing: '3px', marginBottom: '8px' }}>
+          THE FRENCH TOUCH
+        </p>
+        <h1 style={{ color: 'white', fontSize: '42px', fontWeight: '900', marginBottom: '8px' }}>
+          SO PIZZ
+        </h1>
+        <p style={{ color: '#FFD0B0', fontSize: '15px', marginBottom: '24px' }}>
+          Pizzas artisanales cuites au feu de bois
+        </p>
         <Link href="/menu">
-          <button className="px-8 py-4 rounded-full text-white font-bold text-lg uppercase tracking-wide transition-all active:scale-95"
-            style={{ backgroundColor: 'var(--orange)' }}>
-            Voir le menu
+          <button style={{
+            backgroundColor: 'white', color: '#E8430A',
+            borderRadius: '50px', padding: '14px 32px',
+            fontWeight: '700', fontSize: '15px', border: 'none'
+          }}>
+            Voir le menu →
           </button>
         </Link>
       </section>
 
+      {/* RÉSEAUX SOCIAUX */}
+      <section style={{ backgroundColor: 'white', padding: '20px 24px', borderBottom: '1px solid #F0EBE5' }}>
+        <p style={{ color: '#AAA', fontSize: '11px', textAlign: 'center', marginBottom: '12px', letterSpacing: '2px' }}>
+          SUIVEZ-NOUS
+        </p>
+        <div style={{ display: 'flex', gap: '12px' }}>
+          <a href="https://facebook.com/SOPIZZ_DZ" target="_blank"
+            style={{ flex: 1, backgroundColor: '#E8F4FD', borderRadius: '12px', padding: '12px', textAlign: 'center', textDecoration: 'none' }}>
+            <div style={{ fontSize: '20px', marginBottom: '4px' }}>f</div>
+            <div style={{ color: '#1877F2', fontSize: '11px', fontWeight: '600' }}>SOPIZZ_DZ</div>
+          </a>
+          <a href="https://instagram.com/SOPIZZ_DZ" target="_blank"
+            style={{ flex: 1, backgroundColor: '#FFF0F5', borderRadius: '12px', padding: '12px', textAlign: 'center', textDecoration: 'none' }}>
+            <div style={{ fontSize: '20px', marginBottom: '4px' }}>📸</div>
+            <div style={{ color: '#E1306C', fontSize: '11px', fontWeight: '600' }}>SOPIZZ_DZ</div>
+          </a>
+        </div>
+      </section>
+
       {/* BANNIÈRE PROMO */}
-      <div className="mx-4 rounded-2xl px-6 py-4 text-center"
-        style={{ backgroundColor: 'var(--rouge)' }}>
-        <p className="font-bold text-white text-sm uppercase tracking-wide">
-          🛵 Livraison gratuite — Chemin des Crêtes, Draria
+      <div style={{ backgroundColor: '#FFF8F0', borderLeft: '4px solid #E8430A', margin: '16px', borderRadius: '12px', padding: '14px 16px' }}>
+        <p style={{ color: '#E8430A', fontWeight: '700', fontSize: '13px', marginBottom: '4px' }}>
+          🛵 Livraison gratuite
+        </p>
+        <p style={{ color: '#888', fontSize: '12px' }}>
+          Chemin des Crêtes, Draria
         </p>
       </div>
 
       {/* ARGUMENTS */}
-      <section className="grid grid-cols-3 gap-4 px-4 py-8">
+      <section style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px', padding: '0 16px 16px' }}>
         {[
           { icon: '🔥', label: 'Feu de bois' },
           { icon: '🌿', label: 'Ingrédients frais' },
           { icon: '🛵', label: 'Livraison rapide' },
         ].map((arg) => (
-          <div key={arg.label} className="flex flex-col items-center gap-2 rounded-2xl py-4"
-            style={{ backgroundColor: 'var(--noir-card)' }}>
-            <span className="text-3xl">{arg.icon}</span>
-            <p className="text-xs text-center font-medium" style={{ color: 'var(--blanc-muted)' }}>
-              {arg.label}
-            </p>
+          <div key={arg.label} style={{
+            backgroundColor: 'white', borderRadius: '12px',
+            padding: '16px 8px', textAlign: 'center',
+            border: '1px solid #F0EBE5'
+          }}>
+            <div style={{ fontSize: '24px', marginBottom: '6px' }}>{arg.icon}</div>
+            <p style={{ color: '#666', fontSize: '11px', fontWeight: '500' }}>{arg.label}</p>
           </div>
         ))}
       </section>
 
-      {/* CTA BAS */}
-      <section className="px-4 pb-10">
+      {/* CTA MENU */}
+      <section style={{ padding: '0 16px 16px' }}>
         <Link href="/menu">
-          <div className="rounded-2xl p-6 flex items-center justify-between"
-            style={{ backgroundColor: 'var(--noir-card)', border: '1px solid var(--gris)' }}>
+          <div style={{
+            backgroundColor: 'white', borderRadius: '16px', padding: '16px',
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            border: '1px solid #F0EBE5'
+          }}>
             <div>
-              <p className="font-bold text-lg" style={{ color: 'var(--blanc)' }}>
+              <p style={{ fontWeight: '700', fontSize: '15px', color: '#222', marginBottom: '4px' }}>
                 29 pizzas disponibles
               </p>
-              <p className="text-sm" style={{ color: 'var(--blanc-muted)' }}>
+              <p style={{ fontSize: '12px', color: '#888' }}>
                 Base Tomate & Base Crème
               </p>
             </div>
-            <span className="text-3xl">🍕</span>
+            <div style={{ backgroundColor: '#E8430A', borderRadius: '10px', padding: '10px 16px' }}>
+              <span style={{ color: 'white', fontWeight: '700', fontSize: '13px' }}>→</span>
+            </div>
           </div>
         </Link>
       </section>
 
       {/* FOOTER */}
-      <footer className="text-center pb-8 px-4">
-        <p className="text-xs" style={{ color: 'var(--blanc-muted)' }}>
-          📞 06 70 07 42 77
-        </p>
-        <p className="text-xs mt-1" style={{ color: 'var(--gris)' }}>
-          @SOPIZZ_DZ
-        </p>
+      <footer style={{ textAlign: 'center', padding: '16px', marginTop: 'auto' }}>
+        <p style={{ color: '#888', fontSize: '12px' }}>📞 06 70 07 42 77</p>
+        <p style={{ color: '#BBB', fontSize: '11px', marginTop: '4px' }}>@SOPIZZ_DZ</p>
       </footer>
 
     </main>

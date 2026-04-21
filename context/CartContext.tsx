@@ -1,13 +1,11 @@
 'use client'
 
 import { createContext, useContext, useState, ReactNode } from 'react'
-import { CartItem, Pizza, Size } from '@/data/types'
-
-// Ce fichier gère le panier dans toute l'application
+import { CartItem, Pizza, Size, Supplement } from '@/data/types'
 
 interface CartContextType {
   items: CartItem[]
-  addItem: (pizza: Pizza, size: Size, quantity: number) => void
+  addItem: (pizza: Pizza, size: Size, quantity: number, supplements: Supplement[]) => void
   removeItem: (pizzaId: string, size: Size) => void
   updateQuantity: (pizzaId: string, size: Size, quantity: number) => void
   clearCart: () => void
@@ -20,7 +18,7 @@ const CartContext = createContext<CartContextType | undefined>(undefined)
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([])
 
-  const addItem = (pizza: Pizza, size: Size, quantity: number) => {
+  const addItem = (pizza: Pizza, size: Size, quantity: number, supplements: Supplement[]) => {
     setItems(prev => {
       const existing = prev.find(i => i.pizza.id === pizza.id && i.size === size)
       if (existing) {
@@ -30,7 +28,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
             : i
         )
       }
-      return [...prev, { pizza, size, quantity }]
+      return [...prev, { pizza, size, quantity, supplements }]
     })
   }
 
@@ -53,7 +51,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const clearCart = () => setItems([])
 
   const totalItems = items.reduce((sum, i) => sum + i.quantity, 0)
-  const totalPrice = items.reduce((sum, i) => sum + i.pizza.price * i.quantity, 0)
+  const totalPrice = items.reduce((sum, i) => {
+    const pizzaPrice = i.size === 'Simple' ? i.pizza.priceSimple : i.pizza.priceMega
+    const supplementsPrice = i.supplements.reduce((s, sup) => s + sup.price, 0)
+    return sum + (pizzaPrice + supplementsPrice) * i.quantity
+  }, 0)
 
   return (
     <CartContext.Provider value={{

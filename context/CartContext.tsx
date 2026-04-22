@@ -52,7 +52,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const totalItems = items.reduce((sum, i) => sum + i.quantity, 0)
   const totalPrice = items.reduce((sum, i) => {
-    const pizzaPrice = i.size === 'Simple' ? i.pizza.priceSimple : i.pizza.priceMega
+    const pizzaPrice = i.size === 'Simple' ? i.pizza.priceSimple : (i.pizza.priceMega ?? i.pizza.priceSimple)
     const supplementsPrice = i.supplements.reduce((s, sup) => s + sup.price, 0)
     return sum + (pizzaPrice + supplementsPrice) * i.quantity
   }, 0)

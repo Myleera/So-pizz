@@ -1,120 +1,102 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 
 export default function Home() {
+  const [showSplash, setShowSplash] = useState(false)
+  const [fadingOut, setFadingOut] = useState(false)
+
+  useEffect(() => {
+    if (sessionStorage.getItem('splashSeen')) return
+    setShowSplash(true)
+    const fadeTimer = setTimeout(() => setFadingOut(true), 2000)
+    const hideTimer = setTimeout(() => {
+      setShowSplash(false)
+      sessionStorage.setItem('splashSeen', '1')
+    }, 2600)
+    return () => {
+      clearTimeout(fadeTimer)
+      clearTimeout(hideTimer)
+    }
+  }, [])
+
   return (
-    <main className="min-h-screen flex flex-col" style={{ backgroundColor: '#FAF8F5' }}>
+    <main style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
 
-      {/* HEADER */}
-      <header style={{ backgroundColor: 'white', borderBottom: '1px solid #F0EBE5' }}
-        className="flex items-center justify-between px-6 py-4">
-        <Image src="/images/logo.png" alt="SO PIZZ" width={100} height={50} />
-        <Link href="/cart">
-          <div style={{ backgroundColor: '#FFF0EB', borderRadius: '12px', padding: '8px 12px' }}>
-            <span style={{ color: '#E8430A', fontSize: '13px', fontWeight: '600' }}>🛒 Panier</span>
-          </div>
-        </Link>
-      </header>
-
-      {/* HERO IMAGE */}
-      <section style={{ backgroundColor: '#E8430A', padding: '32px 24px', textAlign: 'center' }}>
-        <p style={{ color: '#FFD0B0', fontSize: '12px', letterSpacing: '3px', marginBottom: '8px' }}>
-          THE FRENCH TOUCH
-        </p>
-        <h1 style={{ color: 'white', fontSize: '42px', fontWeight: '900', marginBottom: '8px' }}>
-          SO PIZZ
-        </h1>
-        <p style={{ color: '#FFD0B0', fontSize: '15px', marginBottom: '24px' }}>
-          Pizzas artisanales cuites au feu de bois
-        </p>
-        <Link href="/menu">
-          <button style={{
-            backgroundColor: 'white', color: '#E8430A',
-            borderRadius: '50px', padding: '14px 32px',
-            fontWeight: '700', fontSize: '15px', border: 'none'
-          }}>
-            Voir le menu →
-          </button>
-        </Link>
-      </section>
-
-      {/* RÉSEAUX SOCIAUX */}
-      <section style={{ backgroundColor: 'white', padding: '20px 24px', borderBottom: '1px solid #F0EBE5' }}>
-        <p style={{ color: '#AAA', fontSize: '11px', textAlign: 'center', marginBottom: '12px', letterSpacing: '2px' }}>
-          SUIVEZ-NOUS
-        </p>
-        <div style={{ display: 'flex', gap: '12px' }}>
-          <a href="https://facebook.com/SOPIZZ_DZ" target="_blank"
-            style={{ flex: 1, backgroundColor: '#E8F4FD', borderRadius: '12px', padding: '12px', textAlign: 'center', textDecoration: 'none' }}>
-            <div style={{ fontSize: '20px', marginBottom: '4px' }}>f</div>
-            <div style={{ color: '#1877F2', fontSize: '11px', fontWeight: '600' }}>SOPIZZ_DZ</div>
-          </a>
-          <a href="https://instagram.com/SOPIZZ_DZ" target="_blank"
-            style={{ flex: 1, backgroundColor: '#FFF0F5', borderRadius: '12px', padding: '12px', textAlign: 'center', textDecoration: 'none' }}>
-            <div style={{ fontSize: '20px', marginBottom: '4px' }}>📸</div>
-            <div style={{ color: '#E1306C', fontSize: '11px', fontWeight: '600' }}>SOPIZZ_DZ</div>
-          </a>
+      {/* SPLASH SCREEN */}
+      {showSplash && (
+        <div style={{
+          position: 'fixed', inset: 0, zIndex: 100,
+          opacity: fadingOut ? 0 : 1,
+          transition: 'opacity 0.6s ease',
+          pointerEvents: 'none',
+        }}>
+          <Image
+            src="/images/splash.png"
+            alt="SO PIZZ"
+            fill
+            sizes="100vw"
+            style={{ objectFit: 'cover' }}
+            priority
+          />
         </div>
-      </section>
+      )}
 
-      {/* BANNIÈRE PROMO */}
-      <div style={{ backgroundColor: '#FFF8F0', borderLeft: '4px solid #E8430A', margin: '16px', borderRadius: '12px', padding: '14px 16px' }}>
-        <p style={{ color: '#E8430A', fontWeight: '700', fontSize: '13px', marginBottom: '4px' }}>
-          🛵 Livraison gratuite
-        </p>
-        <p style={{ color: '#888', fontSize: '12px' }}>
-          Chemin des Crêtes, Draria
-        </p>
+      {/* IMAGE PRINCIPALE */}
+      <div style={{ flex: 1 }}>
+        <Image
+          src="/images/accueil.png"
+          alt="SO PIZZ — The French Touch"
+          width={1080}
+          height={2128}
+          sizes="100vw"
+          style={{ width: '100%', height: 'auto', display: 'block' }}
+          priority
+        />
       </div>
 
-      {/* ARGUMENTS */}
-      <section style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px', padding: '0 16px 16px' }}>
-        {[
-          { icon: '🔥', label: 'Feu de bois' },
-          { icon: '🌿', label: 'Ingrédients frais' },
-          { icon: '🛵', label: 'Livraison rapide' },
-        ].map((arg) => (
-          <div key={arg.label} style={{
-            backgroundColor: 'white', borderRadius: '12px',
-            padding: '16px 8px', textAlign: 'center',
-            border: '1px solid #F0EBE5'
-          }}>
-            <div style={{ fontSize: '24px', marginBottom: '6px' }}>{arg.icon}</div>
-            <p style={{ color: '#666', fontSize: '11px', fontWeight: '500' }}>{arg.label}</p>
-          </div>
-        ))}
-      </section>
+      {/* BANDE VOIR LE MENU */}
+      <Link href="/menu" style={{ textDecoration: 'none', display: 'block' }}>
+        <div style={{
+          backgroundColor: '#FFD700',
+          padding: '22px 24px',
+          textAlign: 'center',
+        }}>
+          <span style={{ color: '#E8430A', fontWeight: '900', fontSize: '24px', letterSpacing: '0.5px' }}>
+            Voir notre menu →
+          </span>
+        </div>
+      </Link>
 
-      {/* CTA MENU */}
-      <section style={{ padding: '0 16px 16px' }}>
-        <Link href="/menu">
-          <div style={{
-            backgroundColor: 'white', borderRadius: '16px', padding: '16px',
-            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-            border: '1px solid #F0EBE5'
-          }}>
-            <div>
-              <p style={{ fontWeight: '700', fontSize: '15px', color: '#222', marginBottom: '4px' }}>
-                29 pizzas disponibles
-              </p>
-              <p style={{ fontSize: '12px', color: '#888' }}>
-                Base Tomate & Base Crème
-              </p>
-            </div>
-            <div style={{ backgroundColor: '#E8430A', borderRadius: '10px', padding: '10px 16px' }}>
-              <span style={{ color: 'white', fontWeight: '700', fontSize: '13px' }}>→</span>
-            </div>
-          </div>
-        </Link>
-      </section>
-
-      {/* FOOTER */}
-      <footer style={{ textAlign: 'center', padding: '16px', marginTop: 'auto' }}>
-        <p style={{ color: '#888', fontSize: '12px' }}>📞 06 70 07 42 77</p>
-        <p style={{ color: '#BBB', fontSize: '11px', marginTop: '4px' }}>@SOPIZZ_DZ</p>
-      </footer>
+      {/* BANDE RÉSEAUX SOCIAUX */}
+      <div style={{
+        backgroundColor: '#C93A09',
+        padding: '16px 24px',
+        display: 'flex',
+        justifyContent: 'center',
+        gap: '40px',
+        alignItems: 'center',
+      }}>
+        <a href="https://www.facebook.com/sopizz.dz" target="_blank" rel="noopener noreferrer"
+          style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="10" fill="rgba(255,255,255,0.2)" />
+            <path d="M13.5 8H15V6H13C11.9 6 11 6.9 11 8V10H9V12H11V18H13V12H14.7L15 10H13V8.5C13 8.22 13.22 8 13.5 8Z" fill="white" />
+          </svg>
+          <span style={{ color: 'white', fontWeight: '700', fontSize: '13px' }}>@sopizz_dz</span>
+        </a>
+        <a href="https://www.instagram.com/sopizz_dz" target="_blank" rel="noopener noreferrer"
+          style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <rect x="2" y="2" width="20" height="20" rx="6" fill="rgba(255,255,255,0.2)" />
+            <circle cx="12" cy="12" r="4.5" stroke="white" strokeWidth="1.8" />
+            <circle cx="17.2" cy="6.8" r="1.3" fill="white" />
+          </svg>
+          <span style={{ color: 'white', fontWeight: '700', fontSize: '13px' }}>@sopizz_dz</span>
+        </a>
+      </div>
 
     </main>
   )

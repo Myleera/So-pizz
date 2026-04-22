@@ -48,7 +48,7 @@ const NAV_ITEMS = [
   { href: '/',           label: 'Accueil',    Icon: IconHome },
   { href: '/profil',     label: 'Profil',     Icon: IconProfil },
   { href: '/historique', label: 'Historique', Icon: IconHistorique },
-  { href: '/magasins',   label: 'Magasins',   Icon: IconMagasin },
+  { href: '/magasins',   label: 'Restaurants', Icon: IconMagasin },
 ]
 
 export default function BottomNav() {

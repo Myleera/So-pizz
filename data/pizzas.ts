@@ -358,7 +358,7 @@ export const pizzas: Pizza[] = [
     ingredients: ['Crème fraîche', 'Poulet escalope curry', 'Gruyère'],
     priceSimple: 750,
     sizes: ['Simple'],
-    image: '/images/pates-curry.png',
+    image: '/images/Pâtes-poulet-curry-au-fromage.png',
   },
   {
     id: '39', slug: 'pates-carbonara', name: 'Pâtes Carbonara',
@@ -367,7 +367,7 @@ export const pizzas: Pizza[] = [
     ingredients: ['Crème fraîche', 'Poulet fumé', 'Gruyère'],
     priceSimple: 750,
     sizes: ['Simple'],
-    image: '/images/pates-carbonara.png',
+    image: '/images/Pâtes-carbonara.png',
   },
   {
     id: '40', slug: 'pates-mexicaine', name: 'Pâtes Poulet Mexicaine',
@@ -377,7 +377,7 @@ export const pizzas: Pizza[] = [
     priceSimple: 800,
     sizes: ['Simple'],
     badge: 'Spicy',
-    image: '/images/pates-mexicaine.png',
+    image: '/images/Pâtes-poulet-mexicaine.png',
   },
   {
     id: '41', slug: 'pates-bolognaise', name: 'Pâtes Bolognaise',
@@ -386,7 +386,7 @@ export const pizzas: Pizza[] = [
     ingredients: ['Sauce tomates', 'Viande hachée', 'Gruyère'],
     priceSimple: 800,
     sizes: ['Simple'],
-    image: '/images/pates-bolognaise.png',
+    image: '/images/Pâtes-bolognaises.png',
   },
   {
     id: '42', slug: 'pates-champignons', name: 'Pâtes Poulet Champignons',
@@ -395,7 +395,7 @@ export const pizzas: Pizza[] = [
     ingredients: ['Crème fraîche', 'Poulet escalope', 'Champignons frais', 'Gruyère'],
     priceSimple: 850,
     sizes: ['Simple'],
-    image: '/images/pates-champignons.png',
+    image: '/images/Pâtes-poulet-champignons.png',
   },
   {
     id: '43', slug: 'pates-saumon', name: 'Pâtes au Saumon',
@@ -405,7 +405,27 @@ export const pizzas: Pizza[] = [
     priceSimple: 1100,
     sizes: ['Simple'],
     badge: 'Premium',
-    image: '/images/pates-saumon.png',
+    image: '/images/Pâtes-au-saumon.png',
+  },
+
+  // ─── NOS SALADES ───────────────────────────────
+  {
+    id: '47', slug: 'salade-cesar', name: 'Salade César',
+    category: 'Nos Salades',
+    description: 'Salade romaine, poulet grillé, croûtons, parmesan, sauce César',
+    ingredients: ['Salade romaine', 'Poulet grillé', 'Croûtons', 'Parmesan', 'Sauce César'],
+    priceSimple: 650,
+    sizes: ['Simple'],
+    image: '/images/Salade-César.png',
+  },
+  {
+    id: '48', slug: 'salade-nicoise', name: 'Salade Niçoise',
+    category: 'Nos Salades',
+    description: 'Thon, tomates, olives, oeufs durs, haricots verts, anchois',
+    ingredients: ['Thon', 'Tomates', 'Olives', 'Oeufs durs', 'Haricots verts', 'Anchois'],
+    priceSimple: 650,
+    sizes: ['Simple'],
+    image: '/images/Salade-niçoise.png',
   },
 
   // ─── DESSERTS ──────────────────────────────────
@@ -427,15 +447,24 @@ export const pizzas: Pizza[] = [
     ingredients: [],
     priceSimple: 100,
     sizes: ['Simple'],
-    image: '/images/cat-nos-boissons.png',
+    image: '/images/canette.png',
   },
   {
-    id: '46', slug: 'bouteille', name: 'Bouteille',
+    id: '46', slug: 'grande-bouteille', name: 'Grande Bouteille',
     category: 'Nos Boissons',
-    description: 'Boisson gazeuse en bouteille',
+    description: 'Boisson gazeuse en grande bouteille',
     ingredients: [],
-    priceSimple: 150,
+    priceSimple: 250,
     sizes: ['Simple'],
-    image: '/images/cat-nos-boissons.png',
+    image: '/images/grande-bouteuille.png',
+  },
+  {
+    id: '49', slug: 'petite-eau', name: 'Petite Eau',
+    category: 'Nos Boissons',
+    description: 'Eau minérale petite bouteille',
+    ingredients: [],
+    priceSimple: 50,
+    sizes: ['Simple'],
+    image: '/images/petite-eau.png',
   },
 ]

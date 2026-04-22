@@ -43,6 +43,17 @@ function PizzaIconLarge({ color }: { color: string }) {
   )
 }
 
+function SpicyFlameIcon() {
+  return (
+    <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
+      <circle cx="19" cy="19" r="19" fill="#C0392B" />
+      <path d="M19 7C18 10 15 12 16 15.5C14 13 14 10 15.5 8C13 11 12 15.5 14 18.5C12.5 17 12.5 14 14 12C12 16 12.5 21.5 16 23.5C15 26.5 16 29.5 19 30.5C22 29.5 23 26.5 22 23.5C25.5 21.5 26 16 24 12C25.5 14 25.5 17 24 18.5C26 15.5 26 11 23.5 8C25 10 25 13 23 15.5C24 12 23 10 22 7C21 10 20.5 12 20.5 15.5C20 12 20 9 19 7Z" fill="#FF7043" />
+      <ellipse cx="19" cy="25" rx="4" ry="5.5" fill="#27AE60" />
+      <path d="M19 20L18.5 18.5C18.8 18 19.2 18 19.5 18.5L19 20Z" fill="#1E8449" />
+    </svg>
+  )
+}
+
 export default function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params)
   const router = useRouter()
@@ -54,6 +65,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
   const [quantity, setQuantity] = useState(1)
   const [supQty, setSupQty] = useState<Record<string, number>>({})
   const [added, setAdded] = useState(false)
+  const [selectedFlavor, setSelectedFlavor] = useState<string>('')
 
   if (!pizza) {
     return (
@@ -83,9 +95,10 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
   const unitPrice = basePrice + supplementsTotal
   const total = unitPrice * quantity
 
-  const selectedSupplements: Supplement[] = supplements.flatMap(s =>
-    Array(supQty[s.id] ?? 0).fill(s)
-  )
+  const selectedSupplements: Supplement[] = [
+    ...supplements.flatMap(s => Array(supQty[s.id] ?? 0).fill(s)),
+    ...(selectedFlavor ? [{ id: 'flavor', name: `Goût : ${selectedFlavor}`, price: 0 }] : []),
+  ]
 
   const handleAddToCart = () => {
     addItem(pizza, size, quantity, selectedSupplements)
@@ -128,15 +141,20 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
           ‹
         </button>
 
-        {pizza.badge && (
+        {pizza.badge && pizza.badge !== 'Spicy' && (
           <div style={{
             position: 'absolute', bottom: '28px', left: '16px',
-            backgroundColor: pizza.badge === 'Best Seller' ? '#E8430A' : pizza.badge === 'Premium' ? '#C9A84C' : '#C0392B',
+            backgroundColor: pizza.badge === 'Best Seller' ? '#E8430A' : '#C9A84C',
             color: 'white', fontSize: '11px', fontWeight: '700',
             padding: '5px 12px', borderRadius: '20px',
             boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
           }}>
-            {pizza.badge === 'Best Seller' ? '⭐ Best Seller' : pizza.badge === 'Premium' ? '✦ Premium' : '🌶 Spicy'}
+            {pizza.badge === 'Best Seller' ? '⭐ Best Seller' : '✦ Premium'}
+          </div>
+        )}
+        {pizza.badge === 'Spicy' && (
+          <div style={{ position: 'absolute', top: '16px', right: '16px', filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.3))' }}>
+            <SpicyFlameIcon />
           </div>
         )}
       </div>
@@ -171,6 +189,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
           </div>
         </div>
 
+        {pizza.priceMega && <>
         <div style={{ height: '1px', backgroundColor: '#EDEBE8', margin: '0 -16px 20px' }} />
 
         {/* TAILLE — icônes flat design */}
@@ -212,6 +231,8 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
             })}
           </div>
         </div>
+
+        </>}
 
         <div style={{ height: '1px', backgroundColor: '#EDEBE8', margin: '0 -16px 20px' }} />
 
@@ -291,6 +312,39 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
             })}
           </div>
         </div>}
+
+        {pizza.flavors && pizza.flavors.length > 0 && <>
+          <div style={{ height: '1px', backgroundColor: '#EDEBE8', margin: '0 -16px 20px' }} />
+          <div style={{ marginBottom: '24px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
+              <p style={{ fontWeight: '800', fontSize: '15px', color: '#1A1A1A', margin: 0 }}>Choisir un goût</p>
+              <span style={{ fontSize: '11px', color: '#E8430A', fontWeight: '700', backgroundColor: '#FFF0EB', padding: '3px 10px', borderRadius: '20px' }}>
+                Obligatoire
+              </span>
+            </div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+              {pizza.flavors.map(flavor => {
+                const active = selectedFlavor === flavor
+                return (
+                  <button
+                    key={flavor}
+                    onClick={() => setSelectedFlavor(flavor)}
+                    style={{
+                      padding: '10px 16px', borderRadius: '20px', cursor: 'pointer',
+                      backgroundColor: active ? '#E8430A' : 'white',
+                      color: active ? 'white' : '#444',
+                      fontSize: '13px', fontWeight: active ? '700' : '500',
+                      boxShadow: active ? '0 2px 8px rgba(232,67,10,0.35)' : '0 1px 4px rgba(0,0,0,0.08)',
+                      border: active ? '2px solid #E8430A' : '2px solid #EDEBE8',
+                    }}
+                  >
+                    {flavor}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        </>}
 
         <div style={{ height: '1px', backgroundColor: '#EDEBE8', margin: '0 -16px 28px' }} />
 

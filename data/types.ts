@@ -31,6 +31,7 @@ export interface Pizza {
   sizes: Size[]
   badge?: Badge
   image: string
+  flavors?: string[]
 }
 
 export interface CartItem {

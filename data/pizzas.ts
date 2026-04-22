@@ -405,7 +405,7 @@ export const pizzas: Pizza[] = [
     priceSimple: 1100,
     sizes: ['Simple'],
     badge: 'Premium',
-    image: '/images/saumon.png',
+    image: '/images/saumon-2.png',
   },
 
   // ─── NOS SALADES ───────────────────────────────
@@ -425,18 +425,19 @@ export const pizzas: Pizza[] = [
     ingredients: ['Thon', 'Tomates', 'Olives', 'Oeufs durs', 'Haricots verts', 'Anchois'],
     priceSimple: 650,
     sizes: ['Simple'],
-    image: '/images/nicoise.png',
+    image: '/images/nice.png',
   },
 
   // ─── DESSERTS ──────────────────────────────────
   {
     id: '44', slug: 'tiramisu', name: 'Tiramisu',
     category: 'Nos Desserts',
-    description: 'Dessert italien à base de mascarpone et café',
-    ingredients: ['Mascarpone', 'Café', 'Biscuits', 'Cacao'],
+    description: 'Dessert maison à choisir selon votre goût',
+    ingredients: ['Mascarpone', 'Biscuits', 'Crème'],
     priceSimple: 350,
     sizes: ['Simple'],
     image: '/images/cat-nos-desserts.png',
+    flavors: ['Nutella', 'Bueno', 'Caramel beurre salé', 'Oreo', 'Fraise', 'Pistache'],
   },
 
   // ─── BOISSONS ──────────────────────────────────

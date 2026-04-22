@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation'
 import { useCart } from '@/context/CartContext'
 
 function IconHome({ active }: { active: boolean }) {
-  const c = active ? '#E8430A' : '#BBBBBB'
+  const c = active ? '#E8430A' : '#C04A00'
   return (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
       <path d="M3 12L12 3L21 12V21H15V15H9V21H3V12Z" fill={c} />
@@ -15,7 +15,7 @@ function IconHome({ active }: { active: boolean }) {
 }
 
 function IconProfil({ active }: { active: boolean }) {
-  const c = active ? '#E8430A' : '#BBBBBB'
+  const c = active ? '#E8430A' : '#C04A00'
   return (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
       <circle cx="12" cy="8" r="4" fill={c} />
@@ -25,7 +25,7 @@ function IconProfil({ active }: { active: boolean }) {
 }
 
 function IconHistorique({ active }: { active: boolean }) {
-  const c = active ? '#E8430A' : '#BBBBBB'
+  const c = active ? '#E8430A' : '#C04A00'
   return (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
       <circle cx="12" cy="12" r="9" stroke={c} strokeWidth="2" />
@@ -35,7 +35,7 @@ function IconHistorique({ active }: { active: boolean }) {
 }
 
 function IconMagasin({ active }: { active: boolean }) {
-  const c = active ? '#E8430A' : '#BBBBBB'
+  const c = active ? '#E8430A' : '#C04A00'
   return (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
       <path d="M12 2C8.686 2 6 4.686 6 8C6 12.5 12 21 12 21C12 21 18 12.5 18 8C18 4.686 15.314 2 12 2Z" fill={c} />
@@ -46,7 +46,7 @@ function IconMagasin({ active }: { active: boolean }) {
 
 const NAV_ITEMS = [
   { href: '/',           label: 'Accueil',    Icon: IconHome },
-  { href: '/profil',     label: 'Profil',     Icon: IconProfil },
+  { href: '/profil',     label: 'Avis clients', Icon: IconProfil },
   { href: '/historique', label: 'Historique', Icon: IconHistorique },
   { href: '/magasins',   label: 'Restaurants', Icon: IconMagasin },
 ]
@@ -74,7 +74,7 @@ export default function BottomNav() {
           return (
             <Link key={href} href={href} style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px', flex: 1 }}>
               <Icon active={active} />
-              <span className="nav-label" style={{ fontSize: '10px', fontWeight: active ? '700' : '400', color: active ? '#E8430A' : '#BBBBBB' }}>
+              <span className="nav-label" style={{ fontSize: '10px', fontWeight: active ? '700' : '400', color: active ? '#E8430A' : '#C04A00' }}>
                 {label}
               </span>
             </Link>
@@ -125,7 +125,7 @@ export default function BottomNav() {
           return (
             <Link key={href} href={href} style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px', flex: 1 }}>
               <Icon active={active} />
-              <span className="nav-label" style={{ fontSize: '10px', fontWeight: active ? '700' : '400', color: active ? '#E8430A' : '#BBBBBB' }}>
+              <span className="nav-label" style={{ fontSize: '10px', fontWeight: active ? '700' : '400', color: active ? '#E8430A' : '#C04A00' }}>
                 {label}
               </span>
             </Link>

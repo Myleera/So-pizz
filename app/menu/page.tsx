@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { pizzas } from '@/data/pizzas'
@@ -24,6 +24,83 @@ const allSections: { key: Category; label: string }[] = [
   { key: 'Nos Desserts', label: 'Nos Desserts' },
   { key: 'Nos Boissons', label: 'Nos Boissons' },
 ]
+
+function CategoryIcon({ category }: { category: string }) {
+  const c = categoryMeta[category]?.color ?? '#E8430A'
+  const icons: Record<string, React.ReactElement> = {
+    'Base Tomate': (
+      <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+        <circle cx="22" cy="22" r="18" fill={c} />
+        <circle cx="22" cy="22" r="11" fill="white" fillOpacity="0.25" />
+        <path d="M22 10 C22 10 20 8 22 6 C24 8 22 10 22 10Z" fill="white" fillOpacity="0.7" />
+        <circle cx="17" cy="19" r="2.5" fill="white" fillOpacity="0.6" />
+        <circle cx="26" cy="17" r="2.5" fill="white" fillOpacity="0.6" />
+        <circle cx="22" cy="26" r="2.5" fill="white" fillOpacity="0.6" />
+      </svg>
+    ),
+    'Base Crème': (
+      <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+        <circle cx="22" cy="22" r="18" fill={c} />
+        <ellipse cx="22" cy="24" rx="10" ry="8" fill="white" fillOpacity="0.3" />
+        <path d="M15 20 Q22 14 29 20 Q22 26 15 20Z" fill="white" fillOpacity="0.7" />
+        <circle cx="19" cy="25" r="2" fill="white" fillOpacity="0.5" />
+        <circle cx="25" cy="23" r="2" fill="white" fillOpacity="0.5" />
+      </svg>
+    ),
+    'Nos Pizzwich': (
+      <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+        <circle cx="22" cy="22" r="18" fill={c} />
+        <rect x="12" y="18" width="20" height="3" rx="1.5" fill="white" fillOpacity="0.9" />
+        <rect x="12" y="23" width="20" height="3" rx="1.5" fill="white" fillOpacity="0.6" />
+        <rect x="14" y="28" width="16" height="3" rx="1.5" fill="white" fillOpacity="0.9" />
+        <rect x="14" y="13" width="16" height="3" rx="1.5" fill="white" fillOpacity="0.9" />
+      </svg>
+    ),
+    'Nos Pâtes': (
+      <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+        <circle cx="22" cy="22" r="18" fill={c} />
+        <path d="M14 22 Q18 16 22 22 Q26 28 30 22" stroke="white" strokeWidth="2.5" strokeLinecap="round" fill="none" strokeOpacity="0.9" />
+        <path d="M14 26 Q18 20 22 26 Q26 32 30 26" stroke="white" strokeWidth="2.5" strokeLinecap="round" fill="none" strokeOpacity="0.6" />
+        <path d="M14 18 Q18 12 22 18 Q26 24 30 18" stroke="white" strokeWidth="2.5" strokeLinecap="round" fill="none" strokeOpacity="0.5" />
+      </svg>
+    ),
+    'Nos Salades': (
+      <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+        <circle cx="22" cy="22" r="18" fill={c} />
+        <path d="M22 28 C16 28 12 24 12 20 C12 16 16 14 22 16 C28 14 32 16 32 20 C32 24 28 28 22 28Z" fill="white" fillOpacity="0.8" />
+        <path d="M22 16 C22 16 18 12 20 10 C22 10 22 14 22 16Z" fill="white" fillOpacity="0.6" />
+        <path d="M22 16 C22 16 26 11 28 13 C27 15 24 15 22 16Z" fill="white" fillOpacity="0.5" />
+      </svg>
+    ),
+    'Nos Desserts': (
+      <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+        <circle cx="22" cy="22" r="18" fill={c} />
+        <rect x="15" y="24" width="14" height="8" rx="2" fill="white" fillOpacity="0.8" />
+        <path d="M15 24 Q22 16 29 24Z" fill="white" fillOpacity="0.6" />
+        <rect x="21" y="14" width="2" height="6" rx="1" fill="white" fillOpacity="0.7" />
+        <circle cx="22" cy="13" r="2" fill="white" fillOpacity="0.9" />
+      </svg>
+    ),
+    'Nos Boissons': (
+      <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+        <circle cx="22" cy="22" r="18" fill={c} />
+        <path d="M16 15 L17 31 Q22 34 27 31 L28 15Z" fill="white" fillOpacity="0.8" />
+        <path d="M16 15 L28 15" stroke="white" strokeWidth="2" strokeLinecap="round" strokeOpacity="0.9" />
+        <path d="M22 12 L22 15" stroke="white" strokeWidth="2" strokeLinecap="round" strokeOpacity="0.7" />
+        <ellipse cx="22" cy="22" rx="5" ry="3" fill={c} fillOpacity="0.3" />
+      </svg>
+    ),
+  }
+  return (
+    <div style={{ display: 'flex', justifyContent: 'center' }}>
+      {icons[category] ?? (
+        <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+          <circle cx="22" cy="22" r="18" fill={c} />
+        </svg>
+      )}
+    </div>
+  )
+}
 
 function PizzaCard({ pizza }: { pizza: Pizza }) {
   const isPizzwich = pizza.category === 'Nos Pizzwich'
@@ -234,11 +311,11 @@ export default function MenuPage() {
             <button onClick={() => setActiveCategory(null)} style={{ all: 'unset', cursor: 'pointer', fontSize: '13px', fontWeight: '600', color: '#666', marginBottom: '16px', display: 'block' }}>
               ← Retour au menu
             </button>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
-              <div style={{ backgroundColor: categoryMeta[activeCategory].color, borderRadius: '12px', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', flexShrink: 0 }}>
-                {categoryMeta[activeCategory].icon}
-              </div>
-              <h2 style={{ fontSize: '18px', fontWeight: '800', color: '#1A1A1A', margin: 0 }}>{selectedSection.label}</h2>
+            <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+              <CategoryIcon category={activeCategory} />
+              <h2 style={{ fontSize: '20px', fontWeight: '900', color: '#1A1A1A', margin: '10px 0 0' }}>
+                {selectedSection.label}
+              </h2>
             </div>
             {itemsToShow.length > 0 ? (
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>

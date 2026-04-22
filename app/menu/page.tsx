@@ -132,7 +132,17 @@ export default function MenuPage() {
                   </div>
                 </button>
 
-                {/* 2. Pizzas Méga */}
+                {/* 2. Base Crème */}
+                <button onClick={() => setActiveCategory('Base Crème')} style={{ all: 'unset', cursor: 'pointer', backgroundColor: 'white', borderRadius: '18px', overflow: 'hidden', border: '1px solid #F0EBE5', display: 'flex', flexDirection: 'column', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
+                  <div style={{ position: 'relative', width: '100%', aspectRatio: '1 / 1', overflow: 'hidden' }}>
+                    <Image src={categoryMeta['Base Crème'].image} alt="Base Crème" fill sizes="(min-width:768px) 280px, 50vw" style={{ objectFit: 'cover' }} />
+                  </div>
+                  <div style={{ padding: '10px 12px 12px', textAlign: 'center' }}>
+                    <p style={{ fontWeight: '800', fontSize: '13px', color: '#1A1A1A', margin: 0 }}>Base Crème</p>
+                  </div>
+                </button>
+
+                {/* 3. Pizzas Méga */}
                 <button onClick={() => setShowMega(true)} style={{ all: 'unset', cursor: 'pointer', backgroundColor: 'white', borderRadius: '18px', overflow: 'hidden', border: '2px solid #FFCDB8', display: 'flex', flexDirection: 'column', boxShadow: '0 2px 12px rgba(232,67,10,0.12)' }}>
                   <div style={{ position: 'relative', width: '100%', aspectRatio: '1 / 1', overflow: 'hidden' }}>
                     <Image src="/images/cat-pizzas-megas.png" alt="Pizzas Méga" fill sizes="(min-width:768px) 280px, 50vw" style={{ objectFit: 'cover' }} />
@@ -142,8 +152,8 @@ export default function MenuPage() {
                   </div>
                 </button>
 
-                {/* 3. Reste */}
-                {allSections.filter(s => s.key !== 'Base Tomate').map(({ key, label }) => (
+                {/* 4. Reste (sans Base Tomate et Base Crème) */}
+                {allSections.filter(s => s.key !== 'Base Tomate' && s.key !== 'Base Crème').map(({ key, label }) => (
                   <button key={key} onClick={() => setActiveCategory(key)} style={{ all: 'unset', cursor: 'pointer', backgroundColor: 'white', borderRadius: '18px', overflow: 'hidden', border: '1px solid #F0EBE5', display: 'flex', flexDirection: 'column', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
                     <div style={{ position: 'relative', width: '100%', aspectRatio: '1 / 1', overflow: 'hidden' }}>
                       <Image src={categoryMeta[key].image} alt={label} fill sizes="(min-width:768px) 280px, 50vw" style={{ objectFit: 'cover' }} />

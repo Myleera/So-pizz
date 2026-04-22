@@ -9,6 +9,40 @@ import { supplements } from '@/data/categories'
 import { useCart } from '@/context/CartContext'
 import { Size, Supplement } from '@/data/types'
 
+function PizzaIconSmall({ color }: { color: string }) {
+  return (
+    <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+      <circle cx="18" cy="18" r="14" fill={color} />
+      <line x1="18" y1="4" x2="18" y2="32" stroke="white" strokeWidth="1.2" strokeOpacity="0.5" />
+      <line x1="4" y1="18" x2="32" y2="18" stroke="white" strokeWidth="1.2" strokeOpacity="0.5" />
+      <line x1="8.1" y1="8.1" x2="27.9" y2="27.9" stroke="white" strokeWidth="1.2" strokeOpacity="0.5" />
+      <line x1="27.9" y1="8.1" x2="8.1" y2="27.9" stroke="white" strokeWidth="1.2" strokeOpacity="0.5" />
+      <circle cx="12" cy="13" r="2" fill="white" fillOpacity="0.8" />
+      <circle cx="22" cy="12" r="2" fill="white" fillOpacity="0.8" />
+      <circle cx="18" cy="22" r="2" fill="white" fillOpacity="0.8" />
+      <circle cx="18" cy="18" r="2.5" fill="white" fillOpacity="0.3" />
+    </svg>
+  )
+}
+
+function PizzaIconLarge({ color }: { color: string }) {
+  return (
+    <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
+      <circle cx="26" cy="26" r="22" fill={color} />
+      <line x1="26" y1="4" x2="26" y2="48" stroke="white" strokeWidth="1.4" strokeOpacity="0.5" />
+      <line x1="4" y1="26" x2="48" y2="26" stroke="white" strokeWidth="1.4" strokeOpacity="0.5" />
+      <line x1="10.4" y1="10.4" x2="41.6" y2="41.6" stroke="white" strokeWidth="1.4" strokeOpacity="0.5" />
+      <line x1="41.6" y1="10.4" x2="10.4" y2="41.6" stroke="white" strokeWidth="1.4" strokeOpacity="0.5" />
+      <circle cx="17" cy="18" r="2.8" fill="white" fillOpacity="0.8" />
+      <circle cx="33" cy="16" r="2.8" fill="white" fillOpacity="0.8" />
+      <circle cx="26" cy="33" r="2.8" fill="white" fillOpacity="0.8" />
+      <circle cx="14" cy="30" r="2.2" fill="white" fillOpacity="0.6" />
+      <circle cx="36" cy="32" r="2.2" fill="white" fillOpacity="0.6" />
+      <circle cx="26" cy="26" r="3.5" fill="white" fillOpacity="0.25" />
+    </svg>
+  )
+}
+
 export default function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params)
   const router = useRouter()
@@ -49,7 +83,6 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
   const unitPrice = basePrice + supplementsTotal
   const total = unitPrice * quantity
 
-  // Flatten supplements with quantities into Supplement[] for cart
   const selectedSupplements: Supplement[] = supplements.flatMap(s =>
     Array(supQty[s.id] ?? 0).fill(s)
   )
@@ -61,7 +94,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
   }
 
   return (
-    <main style={{ backgroundColor: '#FAF8F5', minHeight: '100vh', paddingBottom: '120px' }}>
+    <main style={{ backgroundColor: '#FAF8F5', minHeight: '100vh', paddingBottom: '100px' }}>
 
       {/* HERO IMAGE */}
       <div style={{ position: 'relative', width: '100%', height: '300px', backgroundColor: '#FFF0EB' }}>
@@ -73,14 +106,13 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
           style={{ objectFit: 'contain', padding: '20px', filter: 'drop-shadow(0px 12px 24px rgba(0,0,0,0.28))' }}
           priority
         />
-
         <div style={{
           position: 'absolute', bottom: 0, left: 0, right: 0, height: '80px',
           background: 'linear-gradient(to bottom, transparent, #FAF8F5)',
           pointerEvents: 'none',
         }} />
 
-        {/* Bouton retour */}
+        {/* Bouton retour flottant — seul bouton en haut */}
         <button
           onClick={() => router.back()}
           style={{
@@ -94,26 +126,6 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
           }}
         >
           ‹
-        </button>
-
-        {/* Bouton panier */}
-        <button
-          onClick={() => router.push('/cart')}
-          style={{
-            position: 'absolute', top: '16px', right: '16px',
-            backgroundColor: 'rgba(255,255,255,0.92)',
-            border: 'none', cursor: 'pointer',
-            borderRadius: '21px', padding: '10px 16px',
-            display: 'flex', alignItems: 'center', gap: '6px',
-            boxShadow: '0 2px 10px rgba(0,0,0,0.12)',
-          }}
-        >
-          <span style={{ fontSize: '16px' }}>🛒</span>
-          {totalItems > 0 && (
-            <span style={{ fontSize: '13px', fontWeight: '800', color: '#E8430A' }}>
-              {totalItems}
-            </span>
-          )}
         </button>
 
         {pizza.badge && (
@@ -161,7 +173,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
 
         <div style={{ height: '1px', backgroundColor: '#EDEBE8', margin: '0 -16px 20px' }} />
 
-        {/* TAILLE */}
+        {/* TAILLE — icônes flat design */}
         <div style={{ marginBottom: '20px' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
             <p style={{ fontWeight: '800', fontSize: '15px', color: '#1A1A1A', margin: 0 }}>Choisir la taille</p>
@@ -176,7 +188,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
               const active = size === s
               const isPizzwich = pizza.category === 'Nos Pizzwich'
               const label = isPizzwich ? (s === 'Simple' ? 'L' : 'XL') : s
-              const icon = s === 'Simple' ? '🍕' : '🍕🍕'
+              const iconColor = active ? '#E8430A' : '#CCBFB8'
               return (
                 <button
                   key={s}
@@ -186,11 +198,15 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                     border: active ? '2px solid #E8430A' : '2px solid #EDEBE8',
                     backgroundColor: active ? '#FFF0EB' : 'white',
                     cursor: 'pointer', textAlign: 'center',
+                    display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px',
                   }}
                 >
-                  <div style={{ fontSize: '22px', marginBottom: '6px' }}>{icon}</div>
+                  {s === 'Simple'
+                    ? <PizzaIconSmall color={iconColor} />
+                    : <PizzaIconLarge color={iconColor} />
+                  }
                   <div style={{ fontSize: '13px', fontWeight: '700', color: active ? '#E8430A' : '#555' }}>{label}</div>
-                  <div style={{ fontSize: '17px', fontWeight: '900', color: active ? '#E8430A' : '#1A1A1A', marginTop: '3px' }}>{price} DA</div>
+                  <div style={{ fontSize: '17px', fontWeight: '900', color: active ? '#E8430A' : '#1A1A1A' }}>{price} DA</div>
                 </button>
               )
             })}
@@ -199,8 +215,8 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
 
         <div style={{ height: '1px', backgroundColor: '#EDEBE8', margin: '0 -16px 20px' }} />
 
-        {/* SUPPLÉMENTS — style image 2 */}
-        <div style={{ marginBottom: '8px' }}>
+        {/* SUPPLÉMENTS — image + nom/prix + stepper */}
+        <div style={{ marginBottom: '28px' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
             <p style={{ fontWeight: '800', fontSize: '15px', color: '#1A1A1A', margin: 0 }}>Suppléments</p>
             <span style={{ fontSize: '11px', color: '#888', fontWeight: '600', backgroundColor: '#F0EFED', padding: '3px 10px', borderRadius: '20px' }}>
@@ -218,13 +234,19 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                   key={sup.id}
                   style={{
                     display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                    paddingTop: '14px', paddingBottom: '14px',
+                    paddingTop: '12px', paddingBottom: '12px',
                     borderBottom: isLast ? 'none' : '1px solid #F0EFED',
+                    gap: '12px',
                   }}
                 >
-                  {/* Gauche : nom + prix */}
-                  <div>
-                    <p style={{ fontSize: '15px', fontWeight: '600', color: '#1A1A1A', margin: '0 0 3px' }}>
+                  {/* Image */}
+                  <div style={{ position: 'relative', width: '48px', height: '48px', flexShrink: 0, borderRadius: '12px', overflow: 'hidden', backgroundColor: '#FFF8F5' }}>
+                    <Image src={sup.image ?? ''} alt={sup.name} fill sizes="48px" style={{ objectFit: 'cover' }} />
+                  </div>
+
+                  {/* Nom + prix */}
+                  <div style={{ flex: 1 }}>
+                    <p style={{ fontSize: '15px', fontWeight: '600', color: '#1A1A1A', margin: '0 0 2px' }}>
                       {sup.name}
                     </p>
                     <p style={{ fontSize: '13px', fontWeight: '700', color: '#E8430A', margin: 0 }}>
@@ -232,7 +254,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                     </p>
                   </div>
 
-                  {/* Droite : stepper */}
+                  {/* Stepper */}
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                     {qty > 0 && (
                       <>
@@ -242,7 +264,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                             width: '32px', height: '32px', borderRadius: '50%',
                             backgroundColor: '#1A1A1A', border: 'none', cursor: 'pointer',
                             display: 'flex', alignItems: 'center', justifyContent: 'center',
-                            fontSize: '20px', color: 'white', fontWeight: '300', lineHeight: 1,
+                            fontSize: '20px', color: 'white', lineHeight: 1,
                           }}
                         >
                           −
@@ -258,7 +280,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                         width: '32px', height: '32px', borderRadius: '50%',
                         backgroundColor: '#E8430A', border: 'none', cursor: 'pointer',
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        fontSize: '20px', color: 'white', fontWeight: '300', lineHeight: 1,
+                        fontSize: '20px', color: 'white', lineHeight: 1,
                       }}
                     >
                       +
@@ -270,94 +292,88 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
           </div>
         </div>
 
-      </div>
+        <div style={{ height: '1px', backgroundColor: '#EDEBE8', margin: '0 -16px 28px' }} />
 
-      {/* BARRE BAS FIXÉE */}
-      <div style={{
-        position: 'fixed', bottom: 0, left: 0, right: 0,
-        backgroundColor: 'white',
-        borderTop: '1px solid #EDEBE8',
-        padding: '14px 16px',
-        paddingBottom: 'calc(env(safe-area-inset-bottom, 0px) + 14px)',
-        zIndex: 10,
-      }}>
-        {added ? (
-          <div style={{ display: 'flex', gap: '10px' }}>
-            <button
-              onClick={() => router.push('/menu')}
-              style={{
-                flex: 1, padding: '16px',
-                backgroundColor: 'white', color: '#E8430A',
-                border: '2px solid #E8430A', borderRadius: '16px',
-                fontSize: '15px', fontWeight: '800', cursor: 'pointer',
-              }}
-            >
-              ← Continuer
-            </button>
-            <button
-              onClick={() => router.push('/cart')}
-              style={{
-                flex: 2, padding: '16px',
-                backgroundColor: '#E8430A', color: 'white',
-                border: 'none', borderRadius: '16px',
-                fontSize: '15px', fontWeight: '800', cursor: 'pointer',
-                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-              }}
-            >
-              <span>Voir le panier</span>
-              <span style={{ backgroundColor: 'rgba(255,255,255,0.25)', borderRadius: '10px', padding: '4px 10px', fontSize: '14px', fontWeight: '900' }}>
-                🛒 {totalItems}
-              </span>
-            </button>
-          </div>
-        ) : (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            {/* Stepper quantité */}
-            <div style={{ display: 'flex', alignItems: 'center', backgroundColor: '#F5F3F0', borderRadius: '14px', overflow: 'hidden' }}>
+        {/* BOUTONS ACTION — dans le contenu, au-dessus de la barre panier */}
+        <div style={{ paddingBottom: '20px' }}>
+          {added ? (
+            <div style={{ display: 'flex', gap: '10px' }}>
               <button
-                onClick={() => setQuantity(q => Math.max(1, q - 1))}
+                onClick={() => router.push('/menu')}
                 style={{
-                  width: '44px', height: '52px', border: 'none', cursor: 'pointer',
-                  backgroundColor: 'transparent', fontSize: '24px',
-                  color: quantity === 1 ? '#CCC' : '#E8430A',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  flex: 1, padding: '16px',
+                  backgroundColor: 'white', color: '#E8430A',
+                  border: '2px solid #E8430A', borderRadius: '16px',
+                  fontSize: '15px', fontWeight: '800', cursor: 'pointer',
                 }}
               >
-                −
+                ← Continuer
               </button>
-              <span style={{ fontSize: '18px', fontWeight: '800', color: '#1A1A1A', minWidth: '28px', textAlign: 'center' }}>
-                {quantity}
-              </span>
               <button
-                onClick={() => setQuantity(q => q + 1)}
+                onClick={() => router.push('/cart')}
                 style={{
-                  width: '44px', height: '52px', border: 'none', cursor: 'pointer',
-                  backgroundColor: 'transparent', fontSize: '24px', color: '#E8430A',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  flex: 2, padding: '16px',
+                  backgroundColor: '#E8430A', color: 'white',
+                  border: 'none', borderRadius: '16px',
+                  fontSize: '15px', fontWeight: '800', cursor: 'pointer',
+                  display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                 }}
               >
-                +
+                <span>Voir le panier</span>
+                <span style={{ backgroundColor: 'rgba(255,255,255,0.25)', borderRadius: '10px', padding: '4px 10px', fontSize: '14px', fontWeight: '900' }}>
+                  🛒 {totalItems}
+                </span>
               </button>
             </div>
+          ) : (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              {/* Stepper quantité */}
+              <div style={{ display: 'flex', alignItems: 'center', backgroundColor: '#F5F3F0', borderRadius: '14px', overflow: 'hidden' }}>
+                <button
+                  onClick={() => setQuantity(q => Math.max(1, q - 1))}
+                  style={{
+                    width: '44px', height: '52px', border: 'none', cursor: 'pointer',
+                    backgroundColor: 'transparent', fontSize: '24px',
+                    color: quantity === 1 ? '#CCC' : '#E8430A',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  }}
+                >
+                  −
+                </button>
+                <span style={{ fontSize: '18px', fontWeight: '800', color: '#1A1A1A', minWidth: '28px', textAlign: 'center' }}>
+                  {quantity}
+                </span>
+                <button
+                  onClick={() => setQuantity(q => q + 1)}
+                  style={{
+                    width: '44px', height: '52px', border: 'none', cursor: 'pointer',
+                    backgroundColor: 'transparent', fontSize: '24px', color: '#E8430A',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  }}
+                >
+                  +
+                </button>
+              </div>
 
-            {/* Bouton ajouter */}
-            <button
-              onClick={handleAddToCart}
-              style={{
-                flex: 1, padding: '16px',
-                backgroundColor: '#E8430A', color: 'white',
-                border: 'none', borderRadius: '16px',
-                fontSize: '15px', fontWeight: '800', cursor: 'pointer',
-                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-              }}
-            >
-              <span>Ajouter au panier</span>
-              <span style={{ backgroundColor: 'rgba(255,255,255,0.2)', borderRadius: '10px', padding: '4px 12px', fontSize: '14px', fontWeight: '900' }}>
-                {total} DA
-              </span>
-            </button>
-          </div>
-        )}
+              <button
+                onClick={handleAddToCart}
+                style={{
+                  flex: 1, padding: '16px',
+                  backgroundColor: '#E8430A', color: 'white',
+                  border: 'none', borderRadius: '16px',
+                  fontSize: '15px', fontWeight: '800', cursor: 'pointer',
+                  display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                }}
+              >
+                <span>Ajouter au panier</span>
+                <span style={{ backgroundColor: 'rgba(255,255,255,0.2)', borderRadius: '10px', padding: '4px 12px', fontSize: '14px', fontWeight: '900' }}>
+                  {total} DA
+                </span>
+              </button>
+            </div>
+          )}
+        </div>
+
       </div>
 
     </main>

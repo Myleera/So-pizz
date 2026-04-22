@@ -215,8 +215,8 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
 
         <div style={{ height: '1px', backgroundColor: '#EDEBE8', margin: '0 -16px 20px' }} />
 
-        {/* SUPPLÉMENTS — image + nom/prix + stepper */}
-        <div style={{ marginBottom: '28px' }}>
+        {/* SUPPLÉMENTS — masqué pour boissons, desserts et salades */}
+        {!['Nos Boissons', 'Nos Desserts', 'Nos Salades'].includes(pizza.category) && <div style={{ marginBottom: '28px' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
             <p style={{ fontWeight: '800', fontSize: '15px', color: '#1A1A1A', margin: 0 }}>Suppléments</p>
             <span style={{ fontSize: '11px', color: '#888', fontWeight: '600', backgroundColor: '#F0EFED', padding: '3px 10px', borderRadius: '20px' }}>
@@ -290,7 +290,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
               )
             })}
           </div>
-        </div>
+        </div>}
 
         <div style={{ height: '1px', backgroundColor: '#EDEBE8', margin: '0 -16px 28px' }} />
 

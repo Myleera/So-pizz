@@ -358,7 +358,7 @@ export const pizzas: Pizza[] = [
     ingredients: ['Crème fraîche', 'Poulet escalope curry', 'Gruyère'],
     priceSimple: 750,
     sizes: ['Simple'],
-    image: '/images/Pâtes-poulet-curry-au-fromage.png',
+    image: '/images/poulet-curry-au-fromage.png',
   },
   {
     id: '39', slug: 'pates-carbonara', name: 'Pâtes Carbonara',
@@ -367,7 +367,7 @@ export const pizzas: Pizza[] = [
     ingredients: ['Crème fraîche', 'Poulet fumé', 'Gruyère'],
     priceSimple: 750,
     sizes: ['Simple'],
-    image: '/images/Pâtes-carbonara.png',
+    image: '/images/carbonara.png',
   },
   {
     id: '40', slug: 'pates-mexicaine', name: 'Pâtes Poulet Mexicaine',
@@ -377,7 +377,7 @@ export const pizzas: Pizza[] = [
     priceSimple: 800,
     sizes: ['Simple'],
     badge: 'Spicy',
-    image: '/images/Pâtes-poulet-mexicaine.png',
+    image: '/images/poulet-mexicaine.png',
   },
   {
     id: '41', slug: 'pates-bolognaise', name: 'Pâtes Bolognaise',
@@ -386,7 +386,7 @@ export const pizzas: Pizza[] = [
     ingredients: ['Sauce tomates', 'Viande hachée', 'Gruyère'],
     priceSimple: 800,
     sizes: ['Simple'],
-    image: '/images/Pâtes-bolognaises.png',
+    image: '/images/bolognaises.png',
   },
   {
     id: '42', slug: 'pates-champignons', name: 'Pâtes Poulet Champignons',
@@ -395,7 +395,7 @@ export const pizzas: Pizza[] = [
     ingredients: ['Crème fraîche', 'Poulet escalope', 'Champignons frais', 'Gruyère'],
     priceSimple: 850,
     sizes: ['Simple'],
-    image: '/images/Pâtes-poulet-champignons.png',
+    image: '/images/poulet-champignons.png',
   },
   {
     id: '43', slug: 'pates-saumon', name: 'Pâtes au Saumon',
@@ -405,7 +405,7 @@ export const pizzas: Pizza[] = [
     priceSimple: 1100,
     sizes: ['Simple'],
     badge: 'Premium',
-    image: '/images/Pâtes-au-saumon.png',
+    image: '/images/saumon.png',
   },
 
   // ─── NOS SALADES ───────────────────────────────
@@ -416,7 +416,7 @@ export const pizzas: Pizza[] = [
     ingredients: ['Salade romaine', 'Poulet grillé', 'Croûtons', 'Parmesan', 'Sauce César'],
     priceSimple: 650,
     sizes: ['Simple'],
-    image: '/images/Salade-César.png',
+    image: '/images/cesar.png',
   },
   {
     id: '48', slug: 'salade-nicoise', name: 'Salade Niçoise',
@@ -425,7 +425,7 @@ export const pizzas: Pizza[] = [
     ingredients: ['Thon', 'Tomates', 'Olives', 'Oeufs durs', 'Haricots verts', 'Anchois'],
     priceSimple: 650,
     sizes: ['Simple'],
-    image: '/images/Salade-niçoise.png',
+    image: '/images/nicoise.png',
   },
 
   // ─── DESSERTS ──────────────────────────────────

@@ -22,7 +22,10 @@ function buildWhatsAppMessage(
     const supsText = item.supplements.length > 0
       ? ` + ${item.supplements.map(s => s.name).join(', ')}`
       : ''
-    return `• ${item.quantity}x ${item.pizza.name} (${item.size}${supsText}) — ${price * item.quantity} DA`
+    const exclusionsText = item.excludedIngredients.length > 0
+      ? ` — sans ${item.excludedIngredients.join(', ')}`
+      : ''
+    return `• ${item.quantity}x ${item.pizza.name} (${item.size}${supsText}${exclusionsText}) — ${price * item.quantity} DA`
   })
 
   const orderLine = orderType === 'emporter'
@@ -143,8 +146,13 @@ export default function CartPage() {
                     <button onClick={() => removeItem(item.pizza.id, item.size)} style={{ all: 'unset', cursor: 'pointer', color: '#DDD', fontSize: '18px', padding: '4px', lineHeight: 1 }}>×</button>
                   </div>
                   {item.supplements.length > 0 && (
-                    <p style={{ fontSize: '11px', color: '#AAA', margin: '0 0 8px' }}>
+                    <p style={{ fontSize: '11px', color: '#AAA', margin: '0 0 4px' }}>
                       + {item.supplements.map(s => s.name).join(', ')}
+                    </p>
+                  )}
+                  {item.excludedIngredients.length > 0 && (
+                    <p style={{ fontSize: '11px', color: '#E8430A', margin: '0 0 8px', fontWeight: '600' }}>
+                      sans {item.excludedIngredients.join(', ')}
                     </p>
                   )}
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>

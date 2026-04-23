@@ -66,6 +66,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
   const [supQty, setSupQty] = useState<Record<string, number>>({})
   const [added, setAdded] = useState(false)
   const [selectedFlavor, setSelectedFlavor] = useState<string>('')
+  const [excludedIngredients, setExcludedIngredients] = useState<string[]>([])
 
   if (!pizza) {
     return (
@@ -101,7 +102,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
   ]
 
   const handleAddToCart = () => {
-    addItem(pizza, size, quantity, selectedSupplements)
+    addItem(pizza, size, quantity, selectedSupplements, excludedIngredients)
     setAdded(true)
     setTimeout(() => setAdded(false), 2000)
   }
@@ -186,6 +187,45 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                 {ing}
               </span>
             ))}
+          </div>
+        </div>
+
+        <div style={{ height: '1px', backgroundColor: '#EDEBE8', margin: '0 -16px 20px' }} />
+
+        {/* PERSONNALISER LES INGRÉDIENTS */}
+        <div style={{ marginBottom: '20px' }}>
+          <p style={{ fontWeight: '800', fontSize: '15px', color: '#1A1A1A', margin: '0 0 14px' }}>Retirer des ingrédients</p>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+            {pizza.ingredients.map(ing => {
+              const isExcluded = excludedIngredients.includes(ing)
+              return (
+                <label key={ing} style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer' }}>
+                  <input
+                    type="checkbox"
+                    checked={!isExcluded}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setExcludedIngredients(prev => prev.filter(i => i !== ing))
+                      } else {
+                        setExcludedIngredients(prev => [...prev, ing])
+                      }
+                    }}
+                    style={{ display: 'none' }}
+                  />
+                  <span style={{
+                    backgroundColor: isExcluded ? '#F5F5F5' : 'white',
+                    color: isExcluded ? '#AAA' : '#666',
+                    fontSize: '12px', fontWeight: '600',
+                    padding: '6px 12px', borderRadius: '20px',
+                    border: `1px solid ${isExcluded ? '#EDEBE8' : '#EDEBE8'}`,
+                    textDecoration: isExcluded ? 'line-through' : 'none',
+                    transition: 'all 0.2s',
+                  }}>
+                    {ing}
+                  </span>
+                </label>
+              )
+            })}
           </div>
         </div>
 
@@ -312,6 +352,49 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
             })}
           </div>
         </div>}
+
+        {/* PERSONNALISATION — retirer des ingrédients */}
+        {pizza.ingredients.length > 1 && <>
+          <div style={{ height: '1px', backgroundColor: '#EDEBE8', margin: '0 -16px 20px' }} />
+          <div style={{ marginBottom: '24px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
+              <p style={{ fontWeight: '800', fontSize: '15px', color: '#1A1A1A', margin: 0 }}>Retirer des ingrédients</p>
+              <span style={{ fontSize: '11px', color: '#888', fontWeight: '600', backgroundColor: '#F0EFED', padding: '3px 10px', borderRadius: '20px' }}>
+                Optionnel
+              </span>
+            </div>
+            <p style={{ fontSize: '12px', color: '#AAA', margin: '0 0 14px' }}>Appuyez sur un ingrédient pour le retirer</p>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+              {pizza.ingredients.map(ing => {
+                const excluded = excludedIngredients.includes(ing)
+                return (
+                  <button
+                    key={ing}
+                    onClick={() => setExcludedIngredients(prev =>
+                      excluded ? prev.filter(i => i !== ing) : [...prev, ing]
+                    )}
+                    style={{
+                      padding: '8px 14px', borderRadius: '20px', cursor: 'pointer',
+                      backgroundColor: excluded ? '#F0EFED' : 'white',
+                      color: excluded ? '#AAAAAA' : '#333',
+                      fontSize: '13px', fontWeight: '600',
+                      border: excluded ? '2px solid #DEDAD6' : '2px solid #EDEBE8',
+                      textDecoration: excluded ? 'line-through' : 'none',
+                      transition: 'all 0.15s',
+                    }}
+                  >
+                    {ing}
+                  </button>
+                )
+              })}
+            </div>
+            {excludedIngredients.length > 0 && (
+              <p style={{ fontSize: '12px', color: '#E8430A', fontWeight: '600', marginTop: '10px', margin: '10px 0 0' }}>
+                Sans : {excludedIngredients.join(', ')}
+              </p>
+            )}
+          </div>
+        </>}
 
         {pizza.flavors && pizza.flavors.length > 0 && <>
           <div style={{ height: '1px', backgroundColor: '#EDEBE8', margin: '0 -16px 20px' }} />

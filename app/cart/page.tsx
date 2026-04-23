@@ -19,13 +19,15 @@ function buildWhatsAppMessage(
 ): string {
   const lines = items.map(item => {
     const price = item.size === 'Simple' ? item.pizza.priceSimple : (item.pizza.priceMega ?? item.pizza.priceSimple)
-    const supsText = item.supplements.length > 0
-      ? ` + ${item.supplements.map(s => s.name).join(', ')}`
+    const supsText = item.supplements.filter(s => s.id !== 'flavor').length > 0
+      ? ` + ${item.supplements.filter(s => s.id !== 'flavor').map(s => s.name).join(', ')}`
       : ''
+    const flavorSup = item.supplements.find(s => s.id === 'flavor')
+    const flavorText = flavorSup ? ` — ${flavorSup.name}` : ''
     const exclusionsText = item.excludedIngredients.length > 0
       ? ` — sans ${item.excludedIngredients.join(', ')}`
       : ''
-    return `• ${item.quantity}x ${item.pizza.name} (${item.size}${supsText}${exclusionsText}) — ${price * item.quantity} DA`
+    return `• ${item.quantity}x ${item.pizza.name} (${item.size}${supsText}${flavorText}${exclusionsText}) — ${price * item.quantity} DA`
   })
 
   const orderLine = orderType === 'emporter'
@@ -71,12 +73,160 @@ export default function CartPage() {
 
   const [orderType, setOrderType] = useState<OrderType>('emporter')
   const [tableType, setTableType] = useState<TableType>('famille')
+  const [showRecap, setShowRecap] = useState(false)
 
-  const handleWhatsApp = () => {
+  const confirmAndSendWhatsApp = () => {
     const msg = buildWhatsAppMessage(items, totalPrice, orderType, orderType === 'sur-place' ? tableType : null)
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`, '_blank')
   }
 
+  /* ─── ÉCRAN DE CONFIRMATION ──────────────────── */
+  if (showRecap) {
+    const orderLabel = orderType === 'emporter'
+      ? '🥡 À emporter'
+      : `🍽️ Sur place — ${tableType === 'famille' ? 'En famille' : 'Seul(e)'}`
+
+    return (
+      <main style={{ backgroundColor: '#FAF8F5', minHeight: '100vh', paddingBottom: '140px' }}>
+
+        {/* HEADER */}
+        <header style={{
+          backgroundColor: 'white', borderBottom: '1px solid #F0EBE5',
+          position: 'sticky', top: 0, zIndex: 10,
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          padding: '16px 20px',
+        }}>
+          <button
+            onClick={() => setShowRecap(false)}
+            style={{ all: 'unset', cursor: 'pointer', fontSize: '14px', fontWeight: '600', color: '#444' }}
+          >
+            ← Modifier
+          </button>
+          <span style={{ fontSize: '16px', fontWeight: '800', color: '#1A1A1A' }}>Confirmer ma commande</span>
+          <div style={{ width: '60px' }} />
+        </header>
+
+        <div style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+
+          {/* TYPE DE COMMANDE */}
+          <div style={{
+            backgroundColor: '#FFF0EB', borderRadius: '14px', padding: '14px 16px',
+            display: 'flex', alignItems: 'center', gap: '10px',
+          }}>
+            <span style={{ fontSize: '22px' }}>{orderType === 'emporter' ? '🥡' : '🍽️'}</span>
+            <span style={{ fontSize: '14px', fontWeight: '800', color: '#E8430A' }}>{orderLabel}</span>
+          </div>
+
+          {/* LISTE DES ARTICLES */}
+          <div style={{ backgroundColor: 'white', borderRadius: '16px', border: '1px solid #F0EBE5', overflow: 'hidden' }}>
+            <p style={{ fontWeight: '800', fontSize: '13px', color: '#888', margin: 0, padding: '14px 16px 10px', borderBottom: '1px solid #F8F6F3' }}>
+              {totalItems} article{totalItems > 1 ? 's' : ''}
+            </p>
+            {items.map((item, index) => {
+              const unitPrice = (item.size === 'Simple' ? item.pizza.priceSimple : (item.pizza.priceMega ?? item.pizza.priceSimple))
+                + item.supplements.reduce((s, sup) => s + sup.price, 0)
+              const isLast = index === items.length - 1
+              const visibleSups = item.supplements.filter(s => s.id !== 'flavor')
+              const flavorSup = item.supplements.find(s => s.id === 'flavor')
+              return (
+                <div key={index} style={{
+                  padding: '14px 16px',
+                  borderBottom: isLast ? 'none' : '1px solid #F8F6F3',
+                  display: 'flex', gap: '12px', alignItems: 'center',
+                }}>
+                  <div style={{ position: 'relative', width: '56px', height: '56px', flexShrink: 0, backgroundColor: '#FFF8F5', borderRadius: '10px' }}>
+                    <Image
+                      src={item.pizza.image.includes('placeholder') ? '/images/margarita.png' : item.pizza.image}
+                      alt={item.pizza.name} fill sizes="56px"
+                      style={{ objectFit: 'contain', padding: '6px', filter: 'drop-shadow(0px 2px 4px rgba(0,0,0,0.15))' }}
+                    />
+                  </div>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                      <p style={{ fontWeight: '700', fontSize: '14px', color: '#1A1A1A', margin: '0 0 4px' }}>
+                        {item.quantity}× {item.pizza.name}
+                      </p>
+                      <span style={{ fontWeight: '800', fontSize: '14px', color: '#E8430A', marginLeft: '8px', flexShrink: 0 }}>
+                        {unitPrice * item.quantity} DA
+                      </span>
+                    </div>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginBottom: visibleSups.length || flavorSup || item.excludedIngredients.length ? '4px' : 0 }}>
+                      <span style={{
+                        fontSize: '10px', fontWeight: '700', color: 'white',
+                        backgroundColor: item.size === 'Simple' ? '#FFAA80' : '#E8430A',
+                        borderRadius: '5px', padding: '2px 7px',
+                      }}>{item.size}</span>
+                    </div>
+                    {visibleSups.length > 0 && (
+                      <p style={{ fontSize: '11px', color: '#AAA', margin: '2px 0 0' }}>
+                        + {visibleSups.map(s => s.name).join(', ')}
+                      </p>
+                    )}
+                    {flavorSup && (
+                      <p style={{ fontSize: '11px', color: '#888', margin: '2px 0 0', fontWeight: '600' }}>
+                        {flavorSup.name}
+                      </p>
+                    )}
+                    {item.excludedIngredients.length > 0 && (
+                      <p style={{ fontSize: '11px', color: '#E8430A', margin: '2px 0 0', fontWeight: '600' }}>
+                        sans {item.excludedIngredients.join(', ')}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+
+          {/* TOTAL */}
+          <div style={{ backgroundColor: 'white', borderRadius: '16px', padding: '16px', border: '1px solid #F0EBE5' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+              <span style={{ fontSize: '13px', color: '#888' }}>Sous-total</span>
+              <span style={{ fontSize: '13px', color: '#888' }}>{totalPrice} DA</span>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
+              <span style={{ fontSize: '13px', color: '#888' }}>Livraison</span>
+              <span style={{ fontSize: '13px', color: '#27AE60', fontWeight: '700' }}>Gratuite 🛵</span>
+            </div>
+            <div style={{ borderTop: '1px solid #F0EBE5', paddingTop: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ fontSize: '16px', fontWeight: '800', color: '#1A1A1A' }}>Total à payer</span>
+              <span style={{ fontSize: '22px', fontWeight: '900', color: '#E8430A' }}>{totalPrice} DA</span>
+            </div>
+          </div>
+
+        </div>
+
+        {/* BOUTONS FIXES */}
+        <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, backgroundColor: 'white', borderTop: '1px solid #F0EBE5', padding: '12px 16px', zIndex: 10, display: 'flex', gap: '10px' }}>
+          <button
+            onClick={() => setShowRecap(false)}
+            style={{
+              flex: 1, padding: '16px', backgroundColor: 'white', color: '#444',
+              border: '2px solid #EDEBE8', borderRadius: '16px',
+              fontSize: '15px', fontWeight: '700', cursor: 'pointer',
+            }}
+          >
+            ← Modifier
+          </button>
+          <button
+            onClick={confirmAndSendWhatsApp}
+            style={{
+              flex: 2, padding: '16px', backgroundColor: '#25D366', color: 'white',
+              border: 'none', borderRadius: '16px',
+              fontSize: '15px', fontWeight: '800', cursor: 'pointer',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+            }}
+          >
+            <span>💬</span>
+            <span>Confirmer et envoyer</span>
+          </button>
+        </div>
+
+      </main>
+    )
+  }
+
+  /* ─── PANIER NORMAL ──────────────────────────── */
   return (
     <main style={{ backgroundColor: '#FAF8F5', minHeight: '100vh', paddingBottom: '140px' }}>
 
@@ -129,9 +279,7 @@ export default function CartPage() {
                 <div style={{ position: 'relative', width: '72px', height: '72px', flexShrink: 0, backgroundColor: '#FFF8F5', borderRadius: '12px' }}>
                   <Image
                     src={item.pizza.image.includes('placeholder') ? '/images/margarita.png' : item.pizza.image}
-                    alt={item.pizza.name}
-                    fill
-                    sizes="72px"
+                    alt={item.pizza.name} fill sizes="72px"
                     style={{ objectFit: 'contain', padding: '6px', filter: 'drop-shadow(0px 4px 6px rgba(0,0,0,0.2))' }}
                   />
                 </div>
@@ -145,9 +293,14 @@ export default function CartPage() {
                     </div>
                     <button onClick={() => removeItem(item.pizza.id, item.size)} style={{ all: 'unset', cursor: 'pointer', color: '#DDD', fontSize: '18px', padding: '4px', lineHeight: 1 }}>×</button>
                   </div>
-                  {item.supplements.length > 0 && (
+                  {item.supplements.filter(s => s.id !== 'flavor').length > 0 && (
                     <p style={{ fontSize: '11px', color: '#AAA', margin: '0 0 4px' }}>
-                      + {item.supplements.map(s => s.name).join(', ')}
+                      + {item.supplements.filter(s => s.id !== 'flavor').map(s => s.name).join(', ')}
+                    </p>
+                  )}
+                  {item.supplements.find(s => s.id === 'flavor') && (
+                    <p style={{ fontSize: '11px', color: '#888', margin: '0 0 4px', fontWeight: '600' }}>
+                      {item.supplements.find(s => s.id === 'flavor')!.name}
                     </p>
                   )}
                   {item.excludedIngredients.length > 0 && (
@@ -183,7 +336,7 @@ export default function CartPage() {
             </div>
           </div>
 
-          {/* SUR PLACE : EN FAMILLE OU SEUL */}
+          {/* SUR PLACE */}
           {orderType === 'sur-place' && (
             <div style={{ backgroundColor: 'white', borderRadius: '16px', padding: '16px', border: '1px solid #F0EBE5' }}>
               <p style={{ fontWeight: '800', fontSize: '14px', color: '#1A1A1A', marginBottom: '12px' }}>Vous êtes...</p>
@@ -194,7 +347,7 @@ export default function CartPage() {
             </div>
           )}
 
-          {/* RÉCAPITULATIF */}
+          {/* TOTAL */}
           <div style={{ backgroundColor: 'white', borderRadius: '16px', padding: '16px', border: '1px solid #F0EBE5' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
               <span style={{ fontSize: '13px', color: '#888' }}>{totalItems} article{totalItems > 1 ? 's' : ''}</span>
@@ -213,11 +366,11 @@ export default function CartPage() {
         </div>
       )}
 
-      {/* BOUTON WHATSAPP */}
+      {/* BOUTON VERS RÉCAPITULATIF */}
       {items.length > 0 && (
         <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, backgroundColor: 'white', borderTop: '1px solid #F0EBE5', padding: '16px', zIndex: 10 }}>
           <button
-            onClick={handleWhatsApp}
+            onClick={() => setShowRecap(true)}
             style={{ width: '100%', padding: '16px', backgroundColor: '#25D366', color: 'white', border: 'none', borderRadius: '16px', fontSize: '16px', fontWeight: '800', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px' }}
           >
             <span style={{ fontSize: '20px' }}>💬</span>

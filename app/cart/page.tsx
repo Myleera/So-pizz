@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -39,30 +39,73 @@ function buildWhatsAppMessage(
   )
 }
 
+function IconEmporter({ color }: { color: string }) {
+  return (
+    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+      <rect x="8" y="13" width="16" height="14" rx="3" fill={color} />
+      <path d="M11 13V10C11 7.79 13.24 6 16 6C18.76 6 21 7.79 21 10V13" stroke={color} strokeWidth="2" strokeLinecap="round" />
+      <rect x="13" y="17" width="6" height="2" rx="1" fill="white" />
+      <path d="M12 6H20" stroke={color} strokeWidth="1.5" strokeLinecap="round" opacity="0.4" />
+    </svg>
+  )
+}
+
+function IconSurPlace({ color }: { color: string }) {
+  return (
+    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+      <rect x="4" y="24" width="24" height="2.5" rx="1.25" fill={color} />
+      <rect x="14" y="14" width="4" height="10" rx="1" fill={color} />
+      <path d="M8 8V14C8 16.21 11.58 18 16 18C20.42 18 24 16.21 24 14V8" stroke={color} strokeWidth="2" strokeLinecap="round" />
+      <path d="M8 8H24" stroke={color} strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  )
+}
+
+function IconFamille({ color }: { color: string }) {
+  return (
+    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+      <circle cx="11" cy="9" r="3.5" fill={color} />
+      <circle cx="21" cy="9" r="3.5" fill={color} />
+      <path d="M4 24C4 19.58 7.13 16 11 16C14.87 16 18 19.58 18 24" stroke={color} strokeWidth="2" strokeLinecap="round" />
+      <path d="M14 24C14 19.58 17.13 16 21 16C24.87 16 28 19.58 28 24" stroke={color} strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  )
+}
+
+function IconSeul({ color }: { color: string }) {
+  return (
+    <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+      <circle cx="16" cy="10" r="5" fill={color} />
+      <path d="M6 26C6 20.48 10.48 16 16 16C21.52 16 26 20.48 26 26" stroke={color} strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  )
+}
+
 type OptionButtonProps = {
   active: boolean
   onClick: () => void
-  icon: string
+  Icon: React.FC<{ color: string }>
   label: string
   sub?: string
   color?: string
 }
 
-function OptionButton({ active, onClick, icon, label, sub, color = '#E8430A' }: OptionButtonProps) {
+function OptionButton({ active, onClick, Icon, label, sub, color = '#E8430A' }: OptionButtonProps) {
+  const c = active ? color : '#BBBBBB'
   return (
     <button
       onClick={onClick}
       style={{
-        flex: 1, padding: '14px 10px', borderRadius: '14px', cursor: 'pointer',
+        flex: 1, padding: '16px 10px', borderRadius: '16px', cursor: 'pointer',
         border: active ? `2px solid ${color}` : '2px solid #F0EBE5',
         backgroundColor: active ? `${color}12` : 'white',
         textAlign: 'center', display: 'flex', flexDirection: 'column',
-        alignItems: 'center', gap: '4px',
+        alignItems: 'center', gap: '6px',
       }}
     >
-      <span style={{ fontSize: '26px' }}>{icon}</span>
-      <span style={{ fontSize: '13px', fontWeight: '800', color: active ? color : '#444' }}>{label}</span>
-      {sub && <span style={{ fontSize: '11px', color: active ? color : '#AAA', fontWeight: '500' }}>{sub}</span>}
+      <Icon color={c} />
+      <span style={{ fontSize: '13px', fontWeight: '800', color: active ? color : '#888' }}>{label}</span>
+      {sub && <span style={{ fontSize: '11px', color: active ? color : '#BBB', fontWeight: '500' }}>{sub}</span>}
     </button>
   )
 }
@@ -331,8 +374,8 @@ export default function CartPage() {
           <div style={{ backgroundColor: 'white', borderRadius: '16px', padding: '16px', border: '1px solid #F0EBE5' }}>
             <p style={{ fontWeight: '800', fontSize: '14px', color: '#1A1A1A', marginBottom: '12px' }}>Comment souhaitez-vous commander ?</p>
             <div style={{ display: 'flex', gap: '10px' }}>
-              <OptionButton active={orderType === 'emporter'} onClick={() => setOrderType('emporter')} icon="🥡" label="À emporter" />
-              <OptionButton active={orderType === 'sur-place'} onClick={() => setOrderType('sur-place')} icon="🍽️" label="Sur place" />
+              <OptionButton active={orderType === 'emporter'} onClick={() => setOrderType('emporter')} Icon={IconEmporter} label="À emporter" />
+              <OptionButton active={orderType === 'sur-place'} onClick={() => setOrderType('sur-place')} Icon={IconSurPlace} label="Sur place" />
             </div>
           </div>
 
@@ -341,8 +384,8 @@ export default function CartPage() {
             <div style={{ backgroundColor: 'white', borderRadius: '16px', padding: '16px', border: '1px solid #F0EBE5' }}>
               <p style={{ fontWeight: '800', fontSize: '14px', color: '#1A1A1A', marginBottom: '12px' }}>Vous êtes...</p>
               <div style={{ display: 'flex', gap: '10px' }}>
-                <OptionButton active={tableType === 'famille'} onClick={() => setTableType('famille')} icon="👨‍👩‍👧" label="En famille" sub="Grande table" color="#27AE60" />
-                <OptionButton active={tableType === 'seul'} onClick={() => setTableType('seul')} icon="🧍" label="Seul(e)" sub="Table individuelle" color="#2980B9" />
+                <OptionButton active={tableType === 'famille'} onClick={() => setTableType('famille')} Icon={IconFamille} label="En famille" sub="Grande table" color="#27AE60" />
+                <OptionButton active={tableType === 'seul'} onClick={() => setTableType('seul')} Icon={IconSeul} label="Seul(e)" sub="Table individuelle" color="#2980B9" />
               </div>
             </div>
           )}

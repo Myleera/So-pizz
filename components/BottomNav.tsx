@@ -55,7 +55,7 @@ export default function BottomNav() {
   const pathname = usePathname()
   const { totalItems } = useCart()
 
-  if (pathname === '/') {
+  if (pathname === '/' || pathname === '/cart') {
     return <style>{`body { padding-bottom: 0 !important; }`}</style>
   }
 
